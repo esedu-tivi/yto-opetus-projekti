@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href="./style.css" rel="stylesheet">
+    <title>test</title>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-sm fixed-top navbarScroll navbar-dark">
+      <div class="container">
+        <a href="index.html" class="navbar-brand fw-bold lead">Nimikandidaatti</a>
+        <button class="navbar-toggler" id="toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsed" aria-controls="collapsed" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="collapsed">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item active">
+              <a href="index.html" class="nav-link fw-bold text-light lead">Etusivu</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div class="container-fluid" style="margin-top: 100px;">
+      <div class="row">
+        <div class="col-xl-2">
+          <select class="form-select fw-bold" id="task-dropdown">
+            <option class="task-item" value="null" hidden selected>Tehtävävalikko</option>
+            <option class="task-item" value="työ">Työ: kaapin työntäminen</option>
+            <option class="task-item" value="nostotyö">Nostotyö: repun nostaminen</option>
+            <option class="task-item" value="nostotyö_ja_teho">Nostotyö ja teho: nousu rappusissa</option>
+          </select>
+        </div>
+        <div class="col-xl-8">
+          <div id="canvas_div">
+            <canvas id="canvas"></canvas>
+          </div>
+          <div class="button-group">
+            <button type="button" class="btn btn-outline-dark fw-bold fs-7" id="start">Aloita</button>
+            <button type="button" class="btn btn-outline-dark fw-bold fs-7" id="stop">Pysäytä</button>
+            <button type="button" class="btn btn-outline-dark fw-bold fs-7" id="reset">Alusta</button>
+          </div>
+        </div>
+        <div class="col-xl-2">
+          <div id="parameters-title">
+            <p class="fw-bold fs-6">Tehtävän parametrit</p>
+          </div>
+          <div id="parameters-main"> 
+            <div id="työ" style="display: none">
+              <form>
+                <div class="input-group mb-3">
+                  <span class="input-group-text">Voima = F =</span>
+                  <input type="text" class="form-control" placeholder="0">
+                  <span class="input-group-text">N</span>
+                </div>
+                <div class="input-group mb-3">
+                  <span class="input-group-text">Matka = s =</span>
+                  <input type="text" class="form-control" placeholder="0">
+                  <span class="input-group-text">m</span>
+                </div>
+                <label for="input_työ" class="fw-bold">Työ = voima * matka</label>
+                <div class="input-group mb-3">
+                  <span class="input-group-text">W = F * s =</span>
+                  <input type="text" class="form-control" id="input_työ" placeholder="0">
+                  <span class="input-group-text">J</span>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="fixed-bottom text-center">@esedu</footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script type="module" src="./scripts/physics.js"></script>
+  </body>
+</html>

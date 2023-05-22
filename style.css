@@ -1,0 +1,71 @@
+:root {
+  --primary: #A800D9;
+  --light-purple: #bd32e7;
+  --white: rgb(255, 255, 255);
+  --bold: 700;
+  --font: sans-serif;
+}
+
+body, html {
+  background-color: rgb(255, 255, 255);
+  height: 100%;
+}
+
+a.active, a:hover {
+  background-color: var(--light-purple);
+}
+
+nav {
+  background-color: var(--primary);
+}
+
+footer {
+  background-color: var(--primary);
+  color: var(--white);
+  font-weight: var(--bold);
+  font-size: x-large;
+}
+
+#physics, #chemistry, #mathematics {
+  text-align: center;
+  background-color: var(--primary);
+  color: var(--white);
+  border-radius: 5%;
+}
+
+#chemistry:disabled, #mathematics:disabled {
+  opacity: 0.2;
+}
+
+#canvas {
+  width: 100%;
+  height: 100%;
+}
+
+#start, #stop, #reset {
+  background-color: var(--white);
+  width: 33.3333%;
+  float: left;
+}
+
+#start:hover:enabled, #stop:hover:enabled, #reset:hover:enabled {
+  background-color: var(--primary);
+  color: white;
+}
+
+#task-dropdown {
+  background-color: var(--primary);
+  color: var(--white);
+  width: 100%;
+}
+
+#parameters-title {
+  background-color: var(--primary);
+  color: var(--white);
+  border-radius: 3%;
+  width: 100%;
+  padding-left: 10px;
+  padding-top: 5px;
+  height: 35px;
+}
+
