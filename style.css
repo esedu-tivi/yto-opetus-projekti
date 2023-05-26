@@ -2,7 +2,6 @@
   --primary: #A800D9;
   --light-purple: #bd32e7;
   --white: rgb(255, 255, 255);
-  --bold: 700;
   --font: sans-serif;
 }
 
@@ -27,10 +26,12 @@ footer {
 }
 
 #physics, #chemistry, #mathematics {
-  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5%;
   background-color: var(--primary);
   color: var(--white);
-  border-radius: 5%;
 }
 
 #chemistry:disabled, #mathematics:disabled {
