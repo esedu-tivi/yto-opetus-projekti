@@ -2,10 +2,7 @@ document.getElementById('task-dropdown').addEventListener('click', (event) => ta
 document.getElementById('t1-btn').addEventListener('click', (event) => calculator(event))
 document.getElementById('t2-btn').addEventListener('click', (event) => calculator(event))
 document.getElementById('t3-btn').addEventListener('click', (event) => calculator(event))
-
-const canvas_div = document.getElementById('canvas_div')
-canvas_div.style.backgroundColor = '#A800D9'
-
+document.getElementById('start').addEventListener('click', (event) => playAnimation(event))
 
 
 //Handles the task parameter form
@@ -24,7 +21,6 @@ function taskSelector(event) {
     }
   })
 }
-
 
 
 //Calculates the physical quantities according to user's inputs
@@ -56,4 +52,71 @@ function calculator(event) {
   t3_result_lift.value =  t3_result_weight.value * Number(t3_height)
   t3_result_efficiency.value = t3_result_lift.value / Number(t3_time)
 
+}
+
+
+
+const sprite = {
+  width: 630,
+  height: 471
+}
+
+let box = {
+  position:{
+      x: 130,
+      y: 20
+  },
+  width: 30,
+  height: 30
+}
+
+let character = {
+  position: {
+      x: 50,
+      y: -30
+  },
+  scale: 0.2
+}
+
+let frame = 0
+let speed = 4
+
+let canvas
+let context
+
+window.onload = function() {
+  canvas = document.getElementById("canvas")
+  context = canvas.getContext("2d")
+
+  sprite.image = new Image()
+  sprite.image.src = "../images/sprite.png"
+
+  requestAnimationFrame(update)
+}
+
+function playAnimation(event) {
+  event.preventDefault()
+  setInterval(() => {
+    update()
+  }, 50)
+}
+
+function update() {
+  box.position.x += speed
+  character.position.x += speed
+
+  if(box.position.x > canvas.width){
+      box.position.x = 130
+      character.position.x = -30
+  }
+
+  context.clearRect(0, 0, canvas.width, canvas.height)
+  context.drawImage(sprite.image, frame * sprite.width, 0, sprite.width, sprite.height, character.position.x, character.position.y, sprite.width * character.scale, sprite.height * character.scale)
+
+  context.beginPath()
+  context.fillRect(box.position.x, box.position.y, box.width, box.height)
+  context.stroke()
+
+  if(frame < 6) frame++
+  else frame = 0
 }
