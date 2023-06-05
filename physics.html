@@ -29,9 +29,9 @@
         <div class="col-xl-2">
           <select class="form-select fw-bold" id="task-dropdown">
             <option class="task-item" value="null" hidden selected>Tehtävävalikko</option>
-            <option class="task-item" value="työ">Työ: kaapin työntäminen</option>
-            <option class="task-item" value="nostotyö">Nostotyö: repun nostaminen</option>
-            <option class="task-item" value="nostotyö_ja_teho">Nostotyö ja teho: nousu rappusissa</option>
+            <option class="task-item" value="task1">Työ: kaapin työntäminen</option>
+            <option class="task-item" value="task2">Nostotyö: repun nostaminen</option>
+            <option class="task-item" value="task3">Nostotyö ja teho: nousu rappusissa</option>
           </select>
         </div>
         <div class="col-xl-8">
@@ -49,85 +49,88 @@
             <p class="fw-bold fs-6">Tehtävän parametrit</p>
           </div>
           <div id="parameters-main"> 
-            <div id="työ" style="display: none">
+            <div id="task1" style="display: none">
               <form>
                 <div class="input-group mb-3">
                   <span class="input-group-text">Voima = F =</span>
-                  <input type="text" class="form-control" placeholder="0">
+                  <input type="text" class="form-control" id="t1-strength" placeholder="0">
                   <span class="input-group-text">N</span>
                 </div>
                 <div class="input-group mb-3">
                   <span class="input-group-text">Matka = s =</span>
-                  <input type="text" class="form-control" placeholder="0">
+                  <input type="text" class="form-control" id="t1-distance" placeholder="0">
                   <span class="input-group-text">m</span>
                 </div>
-                <label for="input_työ" class="fw-bold">Työ = voima * matka</label>
+                <label class="fw-bold">Työ = voima * matka</label>
                 <div class="input-group mb-3">
                   <span class="input-group-text">W = F * s =</span>
-                  <input type="text" class="form-control" id="input_työ_1" placeholder="0" disabled>
+                  <input type="text" class="form-control" id="t1-result-work" placeholder="0" disabled>
                   <span class="input-group-text">J</span>
                 </div>
+                <button type="submit" class="btn btn-primary" id="t1-btn">Laske</button>
               </form>
             </div>
-            <div id="nostotyö" style="display: none">
+            <div id="task2" style="display: none">
               <form>
                 <div class="input-group mb-3">
                   <span class="input-group-text">Massa = m =</span>
-                  <input type="text" class="form-control" placeholder="0">
+                  <input type="text" class="form-control" id="t2-mass" placeholder="0">
                   <span class="input-group-text">kg</span>
                 </div>
                 <div class="input-group mb-3">
                   <span class="input-group-text">Korkeus = h = </span>
-                  <input type="text" class="form-control" placeholder="0">
+                  <input type="text" class="form-control" id="t2-height" placeholder="0">
                   <span class="input-group-text">m</span>
                 </div>
                 <div class="input-group mb-3">
                   <span class="input-group-text">Paino = G = </span>
-                  <input type="text" class="form-control" id="input_työ_2" placeholder="0" disabled>
+                  <input type="text" class="form-control" id="t2-result-weight" placeholder="0" disabled>
                   <span class="input-group-text">N</span>
                 </div>
-                <label for="input_työ" class="fw-bold">Nostotyö = paino * korkeus</label>
+                <label class="fw-bold">Nostotyö = paino * korkeus</label>
                 <div class="input-group mb-3">
                   <span class="input-group-text">W = G * h =</span>
-                  <input type="text" class="form-control" id="input_työ_3" placeholder="0" disabled>
+                  <input type="text" class="form-control" id="t2-result-lift" placeholder="0" disabled>
                   <span class="input-group-text">J</span>
                 </div>
+                <button type="submit" class="btn btn-primary" id="t2-btn">Laske</button>
               </form>
             </div>
-            <div id="nostotyö_ja_teho" style="display: none">
+            <div id="task3" style="display: none">
               <form>
                 <div class="input-group mb-3">
                   <span class="input-group-text">Massa = m =</span>
-                  <input type="text" class="form-control" placeholder="0">
+                  <input type="text" class="form-control" id="t3-mass" placeholder="0">
                   <span class="input-group-text">kg</span>
                 </div>
                 <div class="input-group mb-3">
                   <span class="input-group-text">Korkeus = h = </span>
-                  <input type="text" class="form-control" placeholder="0">
+                  <input type="text" class="form-control" id="t3-height" placeholder="0">
                   <span class="input-group-text">m</span>
                 </div>
                 <div class="input-group mb-3">
                   <span class="input-group-text">Aika = t = </span>
-                  <input type="text" class="form-control" placeholder="0">
+                  <input type="text" class="form-control" id="t3-time" placeholder="0">
                   <span class="input-group-text">s</span>
                 </div>
                 <div class="input-group mb-3">
                   <span class="input-group-text">Paino = G = </span>
-                  <input type="text" class="form-control" id="input_työ" placeholder="0" disabled>
+                  <input type="text" class="form-control" id="t3-result-weight" placeholder="0" disabled>
                   <span class="input-group-text">N</span>
                 </div>
-                <label for="input_työ" class="fw-bold">Nostotyö = paino * korkeus</label>
+                <label class="fw-bold">Nostotyö = paino * korkeus</label>
                 <div class="input-group mb-3">
                   <span class="input-group-text">W = G * h =</span>
-                  <input type="text" class="form-control" id="input_työ_4" placeholder="0" disabled>
+                  <input type="text" class="form-control" id="t3-result-lift" placeholder="0" disabled>
                   <span class="input-group-text">J</span>
                 </div>
-                <label for="input_työ" class="fw-bold">Teho = työ / aika</label>
+                <label class="fw-bold">Teho = työ / aika</label>
                 <div class="input-group mb-3">
                   <span class="input-group-text">P = W / t =</span>
-                  <input type="text" class="form-control" id="input_työ_5" placeholder="0" disabled>
+                  <input type="text" class="form-control" id="t3-result-efficiency" placeholder="0" disabled>
                   <span class="input-group-text">W</span>
                 </div>
+                <button type="submit" class="btn btn-primary" id="t3-btn">Laske</button>
               </form>
             </div>
           </div>
