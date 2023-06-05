@@ -4,23 +4,62 @@ document.getElementById('t2-btn').addEventListener('click', (event) => calculato
 document.getElementById('t3-btn').addEventListener('click', (event) => calculator(event))
 document.getElementById('start').addEventListener('click', (event) => playAnimation(event))
 
+let canvas
+let context
+
+const sprite = {
+  width: 630,
+  height: 471
+}
+
+let box = {
+  position: { x: 130, y: 20 },
+  width: 30,
+  height: 30
+}
+
+let character = {
+  position: { x: 50, y: -30 },
+  scale: 0.2
+}
+
+let frame = 0
+let speed = 4
+let active
+
+
+
+//Loading canvas and sprites
+window.onload = function() {
+  canvas = document.getElementById("canvas")
+  context = canvas.getContext("2d")
+
+  sprite.image = new Image()
+  sprite.image.src = "../images/sprite.png"
+
+  requestAnimationFrame(update)
+}
+
+
 
 //Handles the task parameter form
 function taskSelector(event) {
   event.preventDefault()
-
   if(event.target.value === 'null') return
 
   let tasks = ['task1', 'task2', 'task3']
+  active = null
 
   tasks.forEach(task => {
     if(task === event.target.value) {
       document.getElementById(task).style.display = 'block'
+      active = task
     } else {
       document.getElementById(task).style.display = 'none'
     }
   })
 }
+
 
 
 //Calculates the physical quantities according to user's inputs
@@ -56,52 +95,22 @@ function calculator(event) {
 
 
 
-const sprite = {
-  width: 630,
-  height: 471
-}
-
-let box = {
-  position:{
-      x: 130,
-      y: 20
-  },
-  width: 30,
-  height: 30
-}
-
-let character = {
-  position: {
-      x: 50,
-      y: -30
-  },
-  scale: 0.2
-}
-
-let frame = 0
-let speed = 4
-
-let canvas
-let context
-
-window.onload = function() {
-  canvas = document.getElementById("canvas")
-  context = canvas.getContext("2d")
-
-  sprite.image = new Image()
-  sprite.image.src = "../images/sprite.png"
-
-  requestAnimationFrame(update)
-}
-
+//Starts the animation
 function playAnimation(event) {
   event.preventDefault()
+  if(!active) return
+
   setInterval(() => {
-    update()
+    draw()
   }, 50)
 }
 
-function update() {
+
+
+//Draws the animation
+function draw() {
+  if(!active) return
+
   box.position.x += speed
   character.position.x += speed
 
