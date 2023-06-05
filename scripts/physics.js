@@ -8,23 +8,23 @@ let canvas
 let context
 
 const sprite = {
-  width: 630,
-  height: 471
+  width: 800,
+  height: 600
 }
 
 let box = {
-  position: { x: 130, y: 20 },
+  position: { x: 100, y: 30 },
   width: 30,
-  height: 30
+  height: 65
 }
 
 let character = {
-  position: { x: 50, y: -30 },
+  position: { x: 0, y: 0 },
   scale: 0.2
 }
 
 let frame = 0
-let speed = 4
+let speed = 1
 let active
 
 
@@ -35,7 +35,7 @@ window.onload = function() {
   context = canvas.getContext("2d")
 
   sprite.image = new Image()
-  sprite.image.src = "../images/sprite.png"
+  sprite.image.src = "../images/sprite_walk.png"
 
   requestAnimationFrame(update)
 }
@@ -115,8 +115,8 @@ function draw() {
   character.position.x += speed
 
   if(box.position.x > canvas.width){
-      box.position.x = 130
-      character.position.x = -30
+    box.position.x = 100
+    character.position.x = 0
   }
 
   context.clearRect(0, 0, canvas.width, canvas.height)
@@ -126,6 +126,6 @@ function draw() {
   context.fillRect(box.position.x, box.position.y, box.width, box.height)
   context.stroke()
 
-  if(frame < 6) frame++
+  if(frame < 14) frame++
   else frame = 0
 }
