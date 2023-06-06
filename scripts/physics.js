@@ -27,7 +27,8 @@ let character = {
 let frame = 0
 let speed = 1
 let active
-
+let disabled = false
+let started = false
 
 
 //Loading canvas and sprites
@@ -111,7 +112,7 @@ function calculator(event) {
 }
 
 
-
+//Error handler for parameters
 function parameterError(text) {
   let error_div = document.getElementById('parameter-error')
   error_div.innerHTML = text
@@ -126,6 +127,9 @@ function parameterError(text) {
 function playAnimation(event) {
   event.preventDefault()
   if(!active) return
+  disabled = false
+  if(started) return draw()
+  started = true
 
   setInterval(() => {
     draw()
@@ -138,14 +142,14 @@ function playAnimation(event) {
 function stopAnimation(event) {
   event.preventDefault()
   if(!active) return
-    draw = false
+    disabled = true
 }
 
 
 
 //Draws the animation
 function draw() {
-  if(!active) return
+  if(!active || disabled) return
 
   if(active === 'task1') {
     box.position.x += speed
