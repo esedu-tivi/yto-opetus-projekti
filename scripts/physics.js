@@ -32,13 +32,16 @@ let active
 
 //Loading canvas and sprites
 window.onload = function() {
-  canvas = document.getElementById("canvas")
-  context = canvas.getContext("2d")
+  canvas = document.getElementById('canvas')
+  context = canvas.getContext('2d')
 
-  sprite.image = new Image()
-  sprite.image.src = "../images/sprite_walk.png"
+  sprite.imageWalking = new Image()
+  sprite.imageWalking.src = '../images/sprite_walk.png'
 
-  requestAnimationFrame(update)
+  sprite.imageStairs = new Image()
+  sprite.imageStairs.src = '../images/sprite_stairs.png'
+
+  requestAnimationFrame(draw)
 }
 
 
@@ -66,6 +69,7 @@ function taskSelector(event) {
 //Calculates the physical quantities according to user's inputs
 function calculator(event) {
   event.preventDefault()
+  document.getElementById('parameter-error').innerHTML = ''
 
   //Task 1 parameters
   let t1_strength = document.getElementById('t1-strength').value
@@ -92,6 +96,28 @@ function calculator(event) {
   t3_result_lift.value =  t3_result_weight.value * Number(t3_height)
   t3_result_efficiency.value = t3_result_lift.value / Number(t3_time)
 
+
+  //Parameter error handling
+  let values = {
+    task1: [t1_result],
+    task2: [t2_result_weight, t2_result_lift],
+    task3: [t3_result_weight, t3_result_lift, t3_result_efficiency]
+  }
+
+  values[active].forEach(value => {
+    if(isNaN(value.value)) return parameterError('Syötä määreet numeroina')
+  })
+
+}
+
+
+
+function parameterError(text) {
+  let error_div = document.getElementById('parameter-error')
+  error_div.innerHTML = text
+  setTimeout(() => {
+    error_div.innerHTML = ''
+  }, 5000)
 }
 
 
@@ -106,6 +132,8 @@ function playAnimation(event) {
   }, 50)
 }
 
+
+
 //Stops the animation
 function stopAnimation(event) {
   event.preventDefault()
@@ -114,25 +142,40 @@ function stopAnimation(event) {
 }
 
 
+
 //Draws the animation
 function draw() {
   if(!active) return
 
-  box.position.x += speed
-  character.position.x += speed
+  if(active === 'task1') {
+    box.position.x += speed
+    character.position.x += speed
 
-  if(box.position.x > canvas.width){
-    box.position.x = 100
-    character.position.x = 0
+    if(box.position.x > canvas.width){
+      box.position.x = 100
+      character.position.x = 0
+    }
+
+    context.clearRect(0, 0, canvas.width, canvas.height)
+    context.drawImage(sprite.imageWalking, frame * sprite.width, 0, sprite.width, sprite.height, character.position.x, character.position.y, sprite.width * character.scale, sprite.height * character.scale)
+
+    context.beginPath()
+    context.fillRect(box.position.x, box.position.y, box.width, box.height)
+    context.stroke()
+
+    if(frame < 14) frame++
+    else frame = 0 
   }
 
-  context.clearRect(0, 0, canvas.width, canvas.height)
-  context.drawImage(sprite.image, frame * sprite.width, 0, sprite.width, sprite.height, character.position.x, character.position.y, sprite.width * character.scale, sprite.height * character.scale)
+  if(active === 'task2') {
 
-  context.beginPath()
-  context.fillRect(box.position.x, box.position.y, box.width, box.height)
-  context.stroke()
+  }
 
-  if(frame < 14) frame++
-  else frame = 0
+  if(active === 'task3') {
+    context.clearRect(0, 0, canvas.width, canvas.height)
+    context.drawImage(sprite.imageStairs, frame * sprite.width, 0, sprite.width, sprite.height, character.position.x, character.position.y, sprite.width * character.scale, sprite.height * character.scale)
+    if(frame < 20) frame++
+    else frame = 0 
+  }
+
 }

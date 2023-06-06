@@ -70,3 +70,6 @@ footer {
   height: 35px;
 }
 
+#parameter-error {
+  color: red
+}
