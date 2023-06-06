@@ -4,6 +4,8 @@ document.getElementById('t2-btn').addEventListener('click', (event) => calculato
 document.getElementById('t3-btn').addEventListener('click', (event) => calculator(event))
 document.getElementById('start').addEventListener('click', (event) => playAnimation(event))
 document.getElementById('stop').addEventListener('click', (event) => stopAnimation(event))
+document.getElementById('reset').addEventListener('click', resetAnimation)
+
 
 let canvas
 let context
@@ -13,15 +15,18 @@ const sprite = {
   height: 600
 }
 
-let box = {
-  position: { x: 100, y: 30 },
-  width: 30,
-  height: 65
-}
-
-let character = {
-  position: { x: 0, y: 0 },
-  scale: 0.2
+let objects = {
+  box: {
+    position: { x: 100, y: 30 },
+    defaultPosition: { x: 100, y: 30 },
+    width: 30,
+    height: 65
+  },
+  character: {
+    position: { x: 0, y: 0 },
+    defaultPosition: {x: 0, y: 0},
+    scale: 0.2
+  }
 }
 
 let frame = 0
@@ -51,6 +56,12 @@ window.onload = function() {
 function taskSelector(event) {
   event.preventDefault()
   if(event.target.value === 'null') return
+  
+  if(event.target.value !== active) {
+    resetAnimation()
+    disabled = true
+    context.clearRect(0, 0, canvas.width, canvas.height)
+  }
 
   let tasks = ['task1', 'task2', 'task3']
   active = null
@@ -142,29 +153,39 @@ function playAnimation(event) {
 function stopAnimation(event) {
   event.preventDefault()
   if(!active) return
-    disabled = true
+  disabled = true
 }
 
 
 
+//Resets the animation
+function resetAnimation() {
+  objects.box.position = {...objects.box.defaultPosition}
+  objects.character.position = {...objects.character.defaultPosition}
+  draw(true)
+}
+
+
 //Draws the animation
-function draw() {
-  if(!active || disabled) return
+function draw(bypass) {
+  if(!bypass) {
+    if(!active || disabled) return
+  }
 
   if(active === 'task1') {
-    box.position.x += speed
-    character.position.x += speed
+    objects.box.position.x += speed
+    objects.character.position.x += speed
 
-    if(box.position.x > canvas.width){
-      box.position.x = 100
-      character.position.x = 0
+    if(objects.box.position.x > canvas.width){
+      objects.box.position.x = 100
+      objects.character.position.x = 0
     }
 
     context.clearRect(0, 0, canvas.width, canvas.height)
-    context.drawImage(sprite.imageWalking, frame * sprite.width, 0, sprite.width, sprite.height, character.position.x, character.position.y, sprite.width * character.scale, sprite.height * character.scale)
+    context.drawImage(sprite.imageWalking, frame * sprite.width, 0, sprite.width, sprite.height, objects.character.position.x, objects.character.position.y, sprite.width * objects.character.scale, sprite.height * objects.character.scale)
 
     context.beginPath()
-    context.fillRect(box.position.x, box.position.y, box.width, box.height)
+    context.fillRect(objects.box.position.x, objects.box.position.y, objects.box.width, objects.box.height)
     context.stroke()
 
     if(frame < 14) frame++
@@ -177,7 +198,7 @@ function draw() {
 
   if(active === 'task3') {
     context.clearRect(0, 0, canvas.width, canvas.height)
-    context.drawImage(sprite.imageStairs, frame * sprite.width, 0, sprite.width, sprite.height, character.position.x, character.position.y, sprite.width * character.scale, sprite.height * character.scale)
+    context.drawImage(sprite.imageStairs, frame * sprite.width, 0, sprite.width, sprite.height, objects.character.position.x, objects.character.position.y, sprite.width * objects.character.scale, sprite.height * objects.character.scale)
     if(frame < 20) frame++
     else frame = 0 
   }
