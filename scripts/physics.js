@@ -3,6 +3,7 @@ document.getElementById('t1-btn').addEventListener('click', (event) => calculato
 document.getElementById('t2-btn').addEventListener('click', (event) => calculator(event))
 document.getElementById('t3-btn').addEventListener('click', (event) => calculator(event))
 document.getElementById('start').addEventListener('click', (event) => playAnimation(event))
+document.getElementById('stop').addEventListener('click', (event) => stopAnimation(event))
 
 let canvas
 let context
@@ -105,6 +106,12 @@ function playAnimation(event) {
   }, 50)
 }
 
+//Stops the animation
+function stopAnimation(event) {
+  event.preventDefault()
+  if(!active) return
+    draw = false
+}
 
 
 //Draws the animation
