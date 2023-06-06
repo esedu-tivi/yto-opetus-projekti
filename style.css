@@ -21,7 +21,6 @@ nav {
 footer {
   background-color: var(--primary);
   color: var(--white);
-  font-weight: var(--bold);
   font-size: x-large;
 }
 
