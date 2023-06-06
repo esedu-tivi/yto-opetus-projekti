@@ -2,8 +2,8 @@ document.getElementById('task-dropdown').addEventListener('click', (event) => ta
 document.getElementById('t1-btn').addEventListener('click', (event) => calculator(event))
 document.getElementById('t2-btn').addEventListener('click', (event) => calculator(event))
 document.getElementById('t3-btn').addEventListener('click', (event) => calculator(event))
-document.getElementById('start').addEventListener('click', (event) => playAnimation(event))
-document.getElementById('stop').addEventListener('click', (event) => stopAnimation(event))
+document.getElementById('start').addEventListener('click', playAnimation)
+document.getElementById('stop').addEventListener('click', stopAnimation)
 document.getElementById('reset').addEventListener('click', resetAnimation)
 
 
@@ -61,6 +61,10 @@ function taskSelector(event) {
     resetAnimation()
     disabled = true
     context.clearRect(0, 0, canvas.width, canvas.height)
+    document.getElementById('start').disabled = false
+    document.getElementById('stop').disabled = true
+    document.getElementById('reset').disabled = true
+    document.getElementById('parameter-error').innerHTML = ''
   }
 
   let tasks = ['task1', 'task2', 'task3']
@@ -135,10 +139,14 @@ function parameterError(text) {
 
 
 //Starts the animation
-function playAnimation(event) {
-  event.preventDefault()
+function playAnimation() {
   if(!active) return
   disabled = false
+
+  document.getElementById('start').disabled = true
+  document.getElementById('stop').disabled = false
+  document.getElementById('reset').disabled = false
+
   if(started) return draw()
   started = true
 
@@ -150,10 +158,11 @@ function playAnimation(event) {
 
 
 //Stops the animation
-function stopAnimation(event) {
-  event.preventDefault()
+function stopAnimation() {
   if(!active) return
   disabled = true
+  document.getElementById('start').disabled = false
+  document.getElementById('stop').disabled = true
 }
 
 
