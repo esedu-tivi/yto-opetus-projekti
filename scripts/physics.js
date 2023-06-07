@@ -26,6 +26,13 @@ let objects = {
     position: { x: 0, y: 0 },
     defaultPosition: {x: 0, y: 0},
     scale: 0.2
+  },
+  stairs: {
+    position: { x: 85, y: 100 },
+    defaultPosition: { x: 85, y: 100 },
+    width: 10,
+    height: 6,
+    steps: 16
   }
 }
 
@@ -208,8 +215,29 @@ function draw(bypass) {
   if(active === 'task3') {
     context.clearRect(0, 0, canvas.width, canvas.height)
     context.drawImage(sprite.imageStairs, frame * sprite.width, 0, sprite.width, sprite.height, objects.character.position.x, objects.character.position.y, sprite.width * objects.character.scale, sprite.height * objects.character.scale)
-    if(frame < 20) frame++
-    else frame = 0 
-  }
+    
 
+    context.beginPath()
+    context.moveTo(objects.stairs.position.x, objects.stairs.position.y)
+
+    for(let i = 0; i < objects.stairs.steps; i++) {
+      if(i % 2 === 1) {
+        context.lineTo(objects.stairs.position.x, objects.stairs.position.y)
+        objects.stairs.position.x += objects.stairs.width
+      } else {
+        context.lineTo(objects.stairs.position.x, objects.stairs.position.y)
+        objects.stairs.position.y -= objects.stairs.height
+      }
+      if(i === objects.stairs.steps - 1) objects.stairs.position = {...objects.stairs.defaultPosition}
+      context.stroke()
+    }
+
+    if(frame > 7) {
+      objects.character.position.x += 1.5
+      objects.character.position.y -= 1
+    }
+    
+    if(frame < 12) frame++
+    else frame = 0
+  }
 }
