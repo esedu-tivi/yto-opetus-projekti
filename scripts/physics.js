@@ -82,7 +82,7 @@ function taskSelector(event) {
     resetAnimation()
     disabled = true
     context.clearRect(0, 0, canvas.width, canvas.height)
-    document.getElementById('start').disabled = false
+    document.getElementById('start').disabled = true
     document.getElementById('stop').disabled = true
     document.getElementById('reset').disabled = true
     document.getElementById('parameter-error').innerHTML = ''
@@ -149,6 +149,8 @@ function calculator(event) {
   values[active].forEach(value => {
     if(isNaN(value.value)) return parameterError('Syötä määreet numeroina')
   })
+
+  document.getElementById('start').disabled = false
 
 }
 
