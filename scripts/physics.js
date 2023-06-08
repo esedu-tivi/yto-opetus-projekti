@@ -33,6 +33,11 @@ let objects = {
     width:  9,
     height: 6,
     steps: 30
+  },
+  newtonArrow: {
+    position: { x: 85, y: 280 },
+    defaultPosition: { x: 85, y: 280 },
+    scale: 1
   }
 }
 
@@ -52,8 +57,30 @@ window.onload = function() {
 
   let canvas_div = document.getElementById('canvas_div')
 
+  //Setting the width of the canvas to equal the parent div of the actual canvas
   canvas.width = canvas_div.offsetWidth
   canvas.height = canvas_div.offsetHeight
+
+  //Setting the newton arrow to begin at the start of the canvas no matter the resolution
+  objects.newtonArrow.position.x = canvas.width * 0.02 - 200
+  objects.newtonArrow.defaultPosition = {...objects.newtonArrow.position}
+
+  context.font = "bold 48px Arial"
+  
+  //Scaling down the objects and correcting their positions if the canvas is small, e.g mobile resolutions
+  if(canvas.width < 400) {
+    speed = 2
+    objects.character.scale = 0.5
+    objects.character.position.y = 275
+    objects.character.position.x = -170
+    objects.character.defaultPosition = {...objects.character.position}
+    objects.box.position = {x: 70, y: 360}
+    objects.box.defaultPosition = {...objects.box.position}
+    objects.box.height = 150
+    objects.newtonArrow.position.y = 380
+    objects.newtonArrow.defaultPosition = {...objects.newtonArrow.position}
+    objects.newtonArrow.scale = 0.5
+  }
 
   sprite.imageWalking = new Image()
   sprite.imageWalking.src = '../images/sprite_walk.png'
@@ -70,6 +97,7 @@ window.onload = function() {
 function taskSelector(event) {
   event.preventDefault()
 
+  //Resets the animation & object positions, disables updating, disables buttons and clears errors when a new task is chosen
   if(event.target.value !== active) {
     resetAnimation()
     disabled = true
@@ -80,6 +108,8 @@ function taskSelector(event) {
     document.getElementById('parameter-error').innerHTML = ''
   }
 
+
+  //Handles showing/hiding of the correct parameters
   let tasks = ['task1', 'task2', 'task3']
 
   tasks.forEach(task => {
@@ -191,24 +221,27 @@ function stopAnimation() {
 function resetAnimation() {
   objects.box.position = {...objects.box.defaultPosition}
   objects.character.position = {...objects.character.defaultPosition}
+  objects.newtonArrow.position = {...objects.newtonArrow.defaultPosition}
   context.clearRect(0, 0, canvas.width, canvas.height)
 }
 
 
 //Draws an arrow
 function drawArrow(x, y, length, width, vertical) {
+
+  //Drawing the line
   context.beginPath()
   context.moveTo(x, y)
-
   if(vertical) {
     context.lineTo(x + length, y)
   } else {
     context.lineTo(x, y + length)
   }
-  
+
   context.lineWidth = width
   context.stroke()
 
+  //Drawing the arrowhead
   context.beginPath()
 
   if(vertical) {
@@ -222,6 +255,7 @@ function drawArrow(x, y, length, width, vertical) {
   }
 
   context.fill()
+
   return
 }
 
@@ -235,22 +269,37 @@ function draw() {
     objects.box.position.x += speed
     objects.character.position.x += speed
 
-    if(objects.box.position.x > settings.task1.distance * 47 - 100) return
+    //Determining the length of the distance arrow with a max limit of 94% of the canvas
+    let distanceArrow = settings.task1.distance * canvas.width / 24
+    if(distanceArrow > canvas.width) distanceArrow = canvas.width * 0.94
+
+    //Stopping the animation at the end of the distance arrow
+    if(objects.box.position.x > distanceArrow - (canvas.width * 0.1)) return
+
+    //Setting the width of the closet to a more suitable number on smaller devices
+    if(objects.box.width > canvas.width / 5) objects.box.width = canvas.width / 8
     
     context.clearRect(0, 0, canvas.width, canvas.height)
+    
+    //Drawing the character
     context.drawImage(sprite.imageWalking, frame * sprite.width, 0, sprite.width, sprite.height, objects.character.position.x, objects.character.position.y, sprite.width * objects.character.scale, sprite.height * objects.character.scale)
 
-    drawArrow(objects.character.defaultPosition.x + 310, 520, settings.task1.distance * 47, 15, true)
-    drawArrow(objects.character.position.x + 90, 280, 150, settings.task1.strength / 10, true)
+    //Drawing the distance and newton arrows
+    drawArrow(canvas.width * 0.02, 520, distanceArrow, 15, true)
+    drawArrow(objects.newtonArrow.position.x, objects.newtonArrow.position.y, 150, settings.task1.strength / 10 * objects.newtonArrow.scale, true)
 
-    context.font = "bold 48px Arial"
-    context.fillText(`${settings.task1.distance}m`, objects.character.defaultPosition.x + 310 + settings.task1.distance * 47 / 2, 580)
-    context.fillText(`${settings.task1.strength}N`, objects.character.position.x + 90, 280 - settings.task1.strength / 14)
+    objects.newtonArrow.position.x += speed
 
+    //Texts showing the physical quantities
+    context.fillText(`${settings.task1.distance}m`, distanceArrow / 2, 580)
+    context.fillText(`${settings.task1.strength}N`, objects.newtonArrow.position.x, objects.newtonArrow.position.y - settings.task1.strength / 14 * objects.newtonArrow.scale)
+
+    //Drawing the closet
     context.beginPath()
     context.fillRect(objects.box.position.x, objects.box.position.y, objects.box.width, objects.box.height)
     context.stroke()
 
+    //Changing the character animation's frames
     if(frame < 14) frame++
     else frame = 0 
   }
