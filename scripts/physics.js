@@ -36,13 +36,7 @@ let objects = {
   }
 }
 
-let settings = {
-  task1: {
-    strength: 0,
-    distance: 0,
-    work: 0
-  }
-}
+let settings = {}
 
 let frame = 0
 let speed = 4
@@ -77,7 +71,7 @@ window.onload = function() {
 function taskSelector(event) {
   event.preventDefault()
   if(event.target.value === 'null') return
-  
+
   if(event.target.value !== active) {
     resetAnimation()
     disabled = true
@@ -199,7 +193,7 @@ function stopAnimation() {
 function resetAnimation() {
   objects.box.position = {...objects.box.defaultPosition}
   objects.character.position = {...objects.character.defaultPosition}
-  draw(true)
+  context.clearRect(0, 0, canvas.width, canvas.height)
 }
 
 
@@ -235,10 +229,9 @@ function drawArrow(x, y, length, width, vertical) {
 
 
 //Draws the animation
-function draw(bypass) {
-  if(!bypass) {
-    if(!active || disabled) return
-  }
+function draw() {
+  if(!active || disabled) return
+  
  
 
   //Drawing of task 1 - pushing a closet
