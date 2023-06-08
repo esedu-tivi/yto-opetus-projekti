@@ -112,6 +112,10 @@ function calculator(event) {
   let t1_strength = Number(document.getElementById('t1-strength').value)
   let t1_distance = Number(document.getElementById('t1-distance').value)
   let t1_result_work = document.getElementById('t1-result-work')
+
+  if(t1_strength < 100 || t1_strength > 1000) return parameterError('Voiman on oltava 100-1000N välillä')
+  if(t1_distance < 10 || t1_distance > 25) return parameterError('Matkan on oltava 10-25m välillä')
+
   t1_result_work.value = t1_strength * t1_distance
   settings.task1 = {strength: t1_strength, distance: t1_distance, work: t1_result_work}
 
