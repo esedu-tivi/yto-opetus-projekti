@@ -17,22 +17,22 @@ const sprite = {
 
 let objects = {
   box: {
-    position: { x: 100, y: 30 },
-    defaultPosition: { x: 100, y: 30 },
+    position: { x: 100, y: 80 },
+    defaultPosition: { x: 100, y: 80 },
     width: 30,
     height: 65
   },
   character: {
-    position: { x: 0, y: 0 },
-    defaultPosition: {x: 0, y: 0},
+    position: { x: 0, y: 49 },
+    defaultPosition: {x: 0, y: 49},
     scale: 0.2
   },
   stairs: {
-    position: { x: 85, y: 100 },
-    defaultPosition: { x: 85, y: 100 },
-    width: 10,
+    position: { x: 85, y: 150 },
+    defaultPosition: { x: 85, y: 150 },
+    width:  9,
     height: 6,
-    steps: 16
+    steps: 30
   }
 }
 
