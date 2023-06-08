@@ -49,7 +49,7 @@ footer {
   padding: 10px;
 }
 
-#start:hover:enabled, #stop:hover:enabled, #reset:hover:enabled {
+#start:hover:enabled, #stop:hover:enabled, #reset:hover:enabled, .form-button:hover:enabled {
   background-color: var(--primary);
   color: white;
 }
@@ -71,4 +71,8 @@ footer {
 
 #parameter-error {
   color: red
+}
+
+.form-button {
+  background-color: var(--white);
 }
