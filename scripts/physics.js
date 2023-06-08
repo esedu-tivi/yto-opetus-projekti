@@ -17,15 +17,15 @@ const sprite = {
 
 let objects = {
   box: {
-    position: { x: 100, y: 80 },
-    defaultPosition: { x: 100, y: 80 },
-    width: 30,
-    height: 65
+    position: { x: 160, y: 200 },
+    defaultPosition: { x: 160, y: 200 },
+    width: 150,
+    height: 300
   },
   character: {
-    position: { x: 0, y: 49 },
-    defaultPosition: {x: 0, y: 49},
-    scale: 0.2
+    position: { x: -275, y: 70 },
+    defaultPosition: {x: -275, y: 70},
+    scale: 0.9
   },
   stairs: {
     position: { x: 85, y: 150 },
@@ -45,7 +45,7 @@ let settings = {
 }
 
 let frame = 0
-let speed = 1
+let speed = 4
 let active
 let disabled = false
 let started = false
@@ -55,6 +55,12 @@ let started = false
 window.onload = function() {
   canvas = document.getElementById('canvas')
   context = canvas.getContext('2d')
+
+  let canvas_div = document.getElementById('canvas_div')
+  console.log(canvas_div)
+
+  canvas.width = canvas_div.offsetWidth
+  canvas.height = canvas_div.offsetHeight
 
   sprite.imageWalking = new Image()
   sprite.imageWalking.src = '../images/sprite_walk.png'
@@ -131,7 +137,7 @@ function calculator(event) {
 
   //Parameter error handling
   let values = {
-    task1: [t1_result],
+    task1: [t1_result_work],
     task2: [t2_result_weight, t2_result_lift],
     task3: [t3_result_weight, t3_result_lift, t3_result_efficiency]
   }
@@ -190,6 +196,8 @@ function resetAnimation() {
   draw(true)
 }
 
+
+//Draws an arrow
 function drawArrow(x, y, length, width, vertical) {
   context.beginPath()
   context.moveTo(x, y)
@@ -232,15 +240,17 @@ function draw(bypass) {
     objects.box.position.x += speed
     objects.character.position.x += speed
 
-    if(objects.box.position.x > canvas.width){
-      objects.box.position.x = 100
-      objects.character.position.x = 0
-    }
+    if(objects.box.position.x > settings.task1.distance * 47 - 100) return
     
     context.clearRect(0, 0, canvas.width, canvas.height)
     context.drawImage(sprite.imageWalking, frame * sprite.width, 0, sprite.width, sprite.height, objects.character.position.x, objects.character.position.y, sprite.width * objects.character.scale, sprite.height * objects.character.scale)
 
-    drawArrow(objects.character.defaultPosition.x + 70, 110, settings.task1.distance, 6, true)
+    drawArrow(objects.character.defaultPosition.x + 310, 520, settings.task1.distance * 47, 15, true)
+    drawArrow(objects.character.position.x + 90, 280, 150, settings.task1.strength / 10, true)
+
+    context.font = "bold 48px Arial"
+    context.fillText(`${settings.task1.distance}m`, objects.character.defaultPosition.x + 310 + settings.task1.distance * 47 / 2, 580)
+    context.fillText(`${settings.task1.strength}N`, objects.character.position.x + 90, 280 - settings.task1.strength / 14)
 
     context.beginPath()
     context.fillRect(objects.box.position.x, objects.box.position.y, objects.box.width, objects.box.height)

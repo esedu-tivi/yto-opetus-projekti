@@ -33,9 +33,9 @@
             <option class="task-item" value="task3">Nostotyö ja teho: nousu rappusissa</option>
           </select>
         </div>
-        <div class="col-xl-8">
-          <div id="canvas_div">
-            <canvas id="canvas"></canvas>
+        <div class="col-xl-8" style="height: 650px">
+          <div id="canvas_div" style="height: 600px">
+            <canvas id="canvas" class="w-100 h-100"></canvas>
           </div>
           <div class="button-group">
             <button type="button" class="btn btn-outline-dark fw-bold fs-7" id="start">Käynnistä</button>
@@ -52,12 +52,12 @@
               <form>
                 <div class="input-group mb-3">
                   <span class="input-group-text">Voima = F =</span>
-                  <input type="text" class="form-control" id="t1-strength" placeholder="0">
+                  <input type="text" class="form-control" id="t1-strength" placeholder="100 - 1000">
                   <span class="input-group-text">N</span>
                 </div>
                 <div class="input-group mb-3">
                   <span class="input-group-text">Matka = s =</span>
-                  <input type="text" class="form-control" id="t1-distance" placeholder="0">
+                  <input type="text" class="form-control" id="t1-distance" placeholder="10 - 25">
                   <span class="input-group-text">m</span>
                 </div>
                 <label class="fw-bold">Työ = voima * matka</label>
