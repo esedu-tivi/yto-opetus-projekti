@@ -51,7 +51,6 @@ window.onload = function() {
   context = canvas.getContext('2d')
 
   let canvas_div = document.getElementById('canvas_div')
-  console.log(canvas_div)
 
   canvas.width = canvas_div.offsetWidth
   canvas.height = canvas_div.offsetHeight
@@ -70,7 +69,6 @@ window.onload = function() {
 //Handles the task parameter form
 function taskSelector(event) {
   event.preventDefault()
-  if(event.target.value === 'null') return
 
   if(event.target.value !== active) {
     resetAnimation()
@@ -83,12 +81,12 @@ function taskSelector(event) {
   }
 
   let tasks = ['task1', 'task2', 'task3']
-  active = null
 
   tasks.forEach(task => {
     if(task === event.target.value) {
       document.getElementById(task).style.display = 'block'
       active = task
+      if(settings[active]) document.getElementById('start').disabled = false
     } else {
       document.getElementById(task).style.display = 'none'
     }
@@ -231,8 +229,6 @@ function drawArrow(x, y, length, width, vertical) {
 //Draws the animation
 function draw() {
   if(!active || disabled) return
-  
- 
 
   //Drawing of task 1 - pushing a closet
   if(active === 'task1') {
@@ -275,7 +271,6 @@ function draw() {
 
     //Drawing the character
     context.drawImage(sprite.imageStairs, frame * sprite.width, 0, sprite.width, sprite.height, objects.character.position.x, objects.character.position.y, sprite.width * objects.character.scale, sprite.height * objects.character.scale)
-
 
     //Drawing the stairs according to the number of steps
     context.beginPath()
