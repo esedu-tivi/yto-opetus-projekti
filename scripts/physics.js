@@ -6,7 +6,6 @@ document.getElementById('start').addEventListener('click', playAnimation)
 document.getElementById('stop').addEventListener('click', stopAnimation)
 document.getElementById('reset').addEventListener('click', resetAnimation)
 
-
 let canvas
 let context
 
@@ -55,9 +54,10 @@ window.onload = function() {
   canvas = document.getElementById('canvas')
   context = canvas.getContext('2d')
 
-  let canvas_div = document.getElementById('canvas_div')
+  resetAnimation()
 
   //Setting the width of the canvas to equal the parent div of the actual canvas
+  let canvas_div = document.getElementById('canvas_div')
   canvas.width = canvas_div.offsetWidth
   canvas.height = canvas_div.offsetHeight
 
@@ -347,3 +347,5 @@ function draw() {
     else frame = 0
   }
 }
+
+window.onresize = window.onload
