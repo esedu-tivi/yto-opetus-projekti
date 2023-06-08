@@ -36,6 +36,14 @@ let objects = {
   }
 }
 
+let settings = {
+  task1: {
+    strength: 0,
+    distance: 0,
+    work: 0
+  }
+}
+
 let frame = 0
 let speed = 1
 let active
@@ -95,10 +103,11 @@ function calculator(event) {
   document.getElementById('parameter-error').innerHTML = ''
 
   //Task 1 parameters
-  let t1_strength = document.getElementById('t1-strength').value
-  let t1_distance = document.getElementById('t1-distance').value
-  let t1_result = document.getElementById('t1-result-work')
-  t1_result.value = Number(t1_strength) * Number(t1_distance)
+  let t1_strength = Number(document.getElementById('t1-strength').value)
+  let t1_distance = Number(document.getElementById('t1-distance').value)
+  let t1_result_work = document.getElementById('t1-result-work')
+  t1_result_work.value = t1_strength * t1_distance
+  settings.task1 = {strength: t1_strength, distance: t1_distance, work: t1_result_work}
 
   //Task 2 parameters
   let t2_mass = document.getElementById('t2-mass').value
@@ -181,13 +190,44 @@ function resetAnimation() {
   draw(true)
 }
 
+function drawArrow(x, y, length, width, vertical) {
+  context.beginPath()
+  context.moveTo(x, y)
+
+  if(vertical) {
+    context.lineTo(x + length, y)
+  } else {
+    context.lineTo(x, y + length)
+  }
+  
+  context.lineWidth = width
+  context.stroke()
+
+  context.beginPath()
+
+  if(vertical) {
+    context.moveTo(x + length, y + width)
+    context.lineTo(x + length + width, y)
+    context.lineTo(x + length, y - width)
+  } else {
+    context.moveTo(x - width, y + length)
+    context.lineTo(x, y + length + width)
+    context.lineTo(x + width, y + length)
+  }
+
+  context.fill()
+  return
+}
+
 
 //Draws the animation
 function draw(bypass) {
   if(!bypass) {
     if(!active || disabled) return
   }
+ 
 
+  //Drawing of task 1 - pushing a closet
   if(active === 'task1') {
     objects.box.position.x += speed
     objects.character.position.x += speed
@@ -196,9 +236,11 @@ function draw(bypass) {
       objects.box.position.x = 100
       objects.character.position.x = 0
     }
-
+    
     context.clearRect(0, 0, canvas.width, canvas.height)
     context.drawImage(sprite.imageWalking, frame * sprite.width, 0, sprite.width, sprite.height, objects.character.position.x, objects.character.position.y, sprite.width * objects.character.scale, sprite.height * objects.character.scale)
+
+    drawArrow(objects.character.defaultPosition.x + 70, 110, settings.task1.distance, 6, true)
 
     context.beginPath()
     context.fillRect(objects.box.position.x, objects.box.position.y, objects.box.width, objects.box.height)
@@ -208,15 +250,25 @@ function draw(bypass) {
     else frame = 0 
   }
 
+
+
+  //Drawing of task 2 - lifting up a backpack
   if(active === 'task2') {
 
   }
 
-  if(active === 'task3') {
-    context.clearRect(0, 0, canvas.width, canvas.height)
-    context.drawImage(sprite.imageStairs, frame * sprite.width, 0, sprite.width, sprite.height, objects.character.position.x, objects.character.position.y, sprite.width * objects.character.scale, sprite.height * objects.character.scale)
-    
 
+
+  //Drawing of task 3 - climbing up the stairs
+  if(active === 'task3') {
+
+    context.clearRect(0, 0, canvas.width, canvas.height)
+
+    //Drawing the character
+    context.drawImage(sprite.imageStairs, frame * sprite.width, 0, sprite.width, sprite.height, objects.character.position.x, objects.character.position.y, sprite.width * objects.character.scale, sprite.height * objects.character.scale)
+
+
+    //Drawing the stairs according to the number of steps
     context.beginPath()
     context.moveTo(objects.stairs.position.x, objects.stairs.position.y)
 
@@ -232,6 +284,7 @@ function draw(bypass) {
       context.stroke()
     }
 
+    //Moving character up the stairs on the correct frames
     if(frame > 7) {
       objects.character.position.x += 1.5
       objects.character.position.y -= 1
