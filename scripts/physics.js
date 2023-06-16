@@ -123,8 +123,6 @@ function taskSelector(event) {
   })
 }
 
-
-
 //Calculates the physical quantities according to user's inputs
 function calculator(event) {
   event.preventDefault()
@@ -146,6 +144,10 @@ function calculator(event) {
   let t2_height = document.getElementById('t2-height').value
   let t2_result_weight = document.getElementById('t2-result-weight')
   let t2_result_lift = document.getElementById('t2-result-lift')
+
+  if(t2_mass < 100 || t2_mass > 200) return parameterError('Massan on oltava 100-200 välillä')
+  if(t2_height < 0 || t2_height > 10) return parameterError('Korkeuden on oltava 0-10m välillä')
+
   t2_result_weight.value = Number(t2_mass) * 10
   t2_result_lift.value = (Number(t2_mass) * 10) * Number(t2_height)
    
@@ -156,10 +158,14 @@ function calculator(event) {
   let t3_result_weight = document.getElementById('t3-result-weight')
   let t3_result_lift = document.getElementById('t3-result-lift')
   let t3_result_efficiency = document.getElementById('t3-result-efficiency')
+
+  if(t3_mass < 100 || t3_mass > 200) return parameterError('Massan on oltava 100-200 välillä')
+  if(t3_height < 0 || t3_height > 10) return parameterError('Korkeuden on oltava 0-10m välillä')
+  if(t3_time < 0 || t3_time > 120) return parameterError('Ajan on oltava 0-120 sekunnin välillä')
+
   t3_result_weight.value = Number(t3_mass) * 10
   t3_result_lift.value =  t3_result_weight.value * Number(t3_height)
   t3_result_efficiency.value = t3_result_lift.value / Number(t3_time)
-
 
   //Parameter error handling
   let values = {
