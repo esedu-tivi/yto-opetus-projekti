@@ -1,7 +1,7 @@
 document.getElementById('task-dropdown').addEventListener('click', (event) => taskSelector(event))
-document.getElementById('t1-btn').addEventListener('click', (event) => calculator(event))
-document.getElementById('t2-btn').addEventListener('click', (event) => calculator(event))
-document.getElementById('t3-btn').addEventListener('click', (event) => calculator(event))
+document.getElementById('t1-btn').addEventListener('click', (event) => calculator1(event))
+document.getElementById('t2-btn').addEventListener('click', (event) => calculator2(event))
+document.getElementById('t3-btn').addEventListener('click', (event) => calculator3(event))
 document.getElementById('start').addEventListener('click', playAnimation)
 document.getElementById('stop').addEventListener('click', stopAnimation)
 document.getElementById('reset').addEventListener('click', resetAnimation)
@@ -124,9 +124,8 @@ function taskSelector(event) {
 }
 
 //Calculates the physical quantities according to user's inputs
-function calculator(event) {
+function calculator1(event) {
   event.preventDefault()
-  document.getElementById('parameter-error').innerHTML = ''
 
   //Task 1 parameters
   let t1_strength = Number(document.getElementById('t1-strength').value)
@@ -138,6 +137,10 @@ function calculator(event) {
 
   t1_result_work.value = t1_strength * t1_distance
   settings.task1 = {strength: t1_strength, distance: t1_distance, work: t1_result_work}
+}
+
+function calculator2(event) {
+  event.preventDefault()
 
   //Task 2 parameters
   let t2_mass = document.getElementById('t2-mass').value
@@ -146,11 +149,15 @@ function calculator(event) {
   let t2_result_lift = document.getElementById('t2-result-lift')
 
   if(t2_mass < 100 || t2_mass > 200) return parameterError('Massan on oltava 100-200 välillä')
-  if(t2_height < 0 || t2_height > 10) return parameterError('Korkeuden on oltava 0-10m välillä')
+  if(t2_height < 1 || t2_height > 10) return parameterError('Korkeuden on oltava 1-10m välillä')
 
   t2_result_weight.value = Number(t2_mass) * 10
   t2_result_lift.value = (Number(t2_mass) * 10) * Number(t2_height)
-   
+}
+
+function calculator3(event) {
+  event.preventDefault()
+
   //Task 3 parameters
   let t3_mass = document.getElementById('t3-mass').value
   let t3_height = document.getElementById('t3-height').value
@@ -160,28 +167,13 @@ function calculator(event) {
   let t3_result_efficiency = document.getElementById('t3-result-efficiency')
 
   if(t3_mass < 100 || t3_mass > 200) return parameterError('Massan on oltava 100-200 välillä')
-  if(t3_height < 0 || t3_height > 10) return parameterError('Korkeuden on oltava 0-10m välillä')
-  if(t3_time < 0 || t3_time > 120) return parameterError('Ajan on oltava 0-120 sekunnin välillä')
+  if(t3_height < 1 || t3_height > 10) return parameterError('Korkeuden on oltava 1-10m välillä')
+  if(t3_time < 1 || t3_time > 120) return parameterError('Ajan on oltava 1-120 sekunnin välillä')
 
   t3_result_weight.value = Number(t3_mass) * 10
   t3_result_lift.value =  t3_result_weight.value * Number(t3_height)
   t3_result_efficiency.value = t3_result_lift.value / Number(t3_time)
-
-  //Parameter error handling
-  let values = {
-    task1: [t1_result_work],
-    task2: [t2_result_weight, t2_result_lift],
-    task3: [t3_result_weight, t3_result_lift, t3_result_efficiency]
-  }
-
-  values[active].forEach(value => {
-    if(isNaN(value.value)) return parameterError('Syötä määreet numeroina')
-  })
-
-  document.getElementById('start').disabled = false
-
 }
-
 
 //Error handler for parameters
 function parameterError(text) {
