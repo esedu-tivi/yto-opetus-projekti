@@ -126,7 +126,8 @@ function taskSelector(event) {
 //Calculates the physical quantities according to user's inputs
 function calculator1(event) {
   event.preventDefault()
-
+  document.getElementById('start').disabled = false
+  
   //Task 1 parameters
   let t1_strength = Number(document.getElementById('t1-strength').value)
   let t1_distance = Number(document.getElementById('t1-distance').value)
@@ -141,7 +142,8 @@ function calculator1(event) {
 
 function calculator2(event) {
   event.preventDefault()
-
+  document.getElementById('start').disabled = false
+  
   //Task 2 parameters
   let t2_mass = document.getElementById('t2-mass').value
   let t2_height = document.getElementById('t2-height').value
@@ -158,7 +160,8 @@ function calculator2(event) {
 
 function calculator3(event) {
   event.preventDefault()
-
+  document.getElementById('start').disabled = false
+  
   //Task 3 parameters
   let t3_mass = document.getElementById('t3-mass').value
   let t3_height = document.getElementById('t3-height').value
