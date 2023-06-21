@@ -153,6 +153,7 @@ function calculator2(event) {
 
   t2_result_weight.value = Number(t2_mass) * 10
   t2_result_lift.value = (Number(t2_mass) * 10) * Number(t2_height)
+  settings.task2 = {mass: t2_mass, height: t2_height}
 }
 
 function calculator3(event) {
@@ -173,6 +174,7 @@ function calculator3(event) {
   t3_result_weight.value = Number(t3_mass) * 10
   t3_result_lift.value =  t3_result_weight.value * Number(t3_height)
   t3_result_efficiency.value = t3_result_lift.value / Number(t3_time)
+  settings.task3 = {mass: t3_mass, height: t3_height, time: t3_time}
 }
 
 //Error handler for parameters
