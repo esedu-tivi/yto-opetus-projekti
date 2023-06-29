@@ -27,11 +27,11 @@ let objects = {
     scale: 0.9
   },
   stairs: {
-    position: { x: 85, y: 150 },
-    defaultPosition: { x: 85, y: 150 },
-    width:  9,
-    height: 6,
-    steps: 30
+    position: { x: 138, y: 500 },
+    defaultPosition: { x: 138, y: 500 },
+    width:  25,
+    height: 20,
+    steps: 40
   },
   newtonArrow: {
     position: { x: 85, y: 280 },
@@ -342,8 +342,8 @@ function draw() {
 
     //Moving character up the stairs on the correct frames
     if(frame > 7) {
-      objects.character.position.x += 1.5
-      objects.character.position.y -= 1
+      objects.character.position.x += 2.5
+      objects.character.position.y -= 2
     }
     
     if(frame < 12) frame++
