@@ -29,6 +29,7 @@ let objects = {
   stairs: {
     position: { x: 138, y: 500 },
     defaultPosition: { x: 138, y: 500 },
+    finalPosition: {x: 0, y: 0},
     width:  20,
     height: 20,
     steps: 30
@@ -71,8 +72,7 @@ window.onload = function() {
   if(canvas.width < 400) {
     speed = 2
     objects.character.scale = 0.5
-    objects.character.position.y = 275
-    objects.character.position.x = -170
+    objects.character.position = {y: 275, x: -170}
     objects.character.defaultPosition = {...objects.character.position}
     objects.box.position = {x: 70, y: 360}
     objects.box.defaultPosition = {...objects.box.position}
@@ -123,6 +123,8 @@ function taskSelector(event) {
   })
 }
 
+
+
 //Calculates the physical quantities according to user's inputs
 function calculator1(event) {
   event.preventDefault()
@@ -139,6 +141,8 @@ function calculator1(event) {
   t1_result_work.value = t1_strength * t1_distance
   settings.task1 = {strength: t1_strength, distance: t1_distance, work: t1_result_work}
 }
+
+
 
 function calculator2(event) {
   event.preventDefault()
@@ -157,6 +161,8 @@ function calculator2(event) {
   t2_result_lift.value = (Number(t2_mass) * 10) * Number(t2_height)
   settings.task2 = {mass: t2_mass, height: t2_height}
 }
+
+
 
 function calculator3(event) {
   event.preventDefault()
@@ -178,7 +184,10 @@ function calculator3(event) {
   t3_result_lift.value =  t3_result_weight.value * Number(t3_height)
   t3_result_efficiency.value = t3_result_lift.value / Number(t3_time)
   settings.task3 = {mass: t3_mass, height: t3_height, time: t3_time}
+  objects.stairs.steps = t3_height * 5
 }
+
+
 
 //Error handler for parameters
 function parameterError(text) {
@@ -336,9 +345,15 @@ function draw() {
         context.lineTo(objects.stairs.position.x, objects.stairs.position.y)
         objects.stairs.position.y -= objects.stairs.height
       }
-      if(i === objects.stairs.steps - 1) objects.stairs.position = {...objects.stairs.defaultPosition}
+      if(i === objects.stairs.steps - 1) {
+        objects.stairs.finalPosition = {...objects.stairs.position}
+        objects.stairs.position = {...objects.stairs.defaultPosition}
+      }
       context.stroke()
     }
+
+    //Stopping character on top of stairs
+    if((objects.character.position.y + 432.75) <= objects.stairs.finalPosition.y) return
 
     //Moving character up the stairs on the correct frames
     if(frame > 7) {
