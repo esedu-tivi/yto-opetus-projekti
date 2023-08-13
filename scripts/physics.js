@@ -88,6 +88,12 @@ window.onload = function() {
   sprite.imageStairs = new Image()
   sprite.imageStairs.src = '../images/sprite_stairs.png'
 
+  sprite.imageBackpack = new Image()
+  sprite.imageBackpack.src = '../images/backpack.png'
+
+  sprite.imageTable = new Image()
+  sprite.imageTable.src = '../images/table.png'
+
   requestAnimationFrame(draw)
 }
 
@@ -154,11 +160,11 @@ function calculator2(event) {
   let t2_result_weight = document.getElementById('t2-result-weight')
   let t2_result_lift = document.getElementById('t2-result-lift')
 
-  if(t2_mass < 100 || t2_mass > 200) return parameterError('Massan on oltava 100-200 välillä')
-  if(t2_height < 1 || t2_height > 10) return parameterError('Korkeuden on oltava 1-10m välillä')
+  if(t2_mass < 1 || t2_mass > 50) return parameterError('Massan on oltava 1-50 välillä')
+  if(t2_height < 1 || t2_height > 3) return parameterError('Korkeuden on oltava 1-3 välillä')
 
-  t2_result_weight.value = Number(t2_mass) * 10
-  t2_result_lift.value = (Number(t2_mass) * 10) * Number(t2_height)
+  t2_result_weight.value = Number(t2_mass) * 9.81
+  t2_result_lift.value = (Number(t2_mass) * 9.81) * Number(t2_height)
   settings.task2 = {mass: t2_mass, height: t2_height}
 }
 
@@ -234,6 +240,7 @@ function resetAnimation() {
   objects.box.position = {...objects.box.defaultPosition}
   objects.character.position = {...objects.character.defaultPosition}
   objects.newtonArrow.position = {...objects.newtonArrow.defaultPosition}
+  objects.character.animationStarted = false;
   context.clearRect(0, 0, canvas.width, canvas.height)
 }
 
@@ -318,10 +325,59 @@ function draw() {
 
 
 
-  //Drawing of task 2 - lifting up a backpack
-  if(active === 'task2') {
+// Drawing of task 2 - lifting up a backpack
+if (active === 'task2') {
+  context.clearRect(0, 0, canvas.width, canvas.height);
 
+  // Calculate the position of the table based on user input
+  const t2_height = Number(settings.task2.height);
+  const tableHeight = t2_height * 140; // Adjust multiplier as needed
+  const tableWidth = (3 / 4) * tableHeight;
+  const tableX = (canvas.width - tableWidth) / 2;
+  const tableY = canvas.height - tableHeight;
+
+  // Calculate backpack dimensions and position
+  const t2_mass = Number(settings.task2.mass);
+  const backpackWidth = 70 + t2_mass * 0.6;
+  const backpackHeight = backpackWidth * 1.2;
+  const backpackX = tableX + (tableWidth - backpackWidth) / 2; // Center the backpack horizontally
+
+  // Calculate the initial y position of the backpack at the bottom of the table
+  const initialBackpackY = tableY + tableHeight - backpackHeight;
+
+  // Initialize the current y position of the backpack
+  if (!objects.character.animationStarted) {
+    objects.character.position.y = initialBackpackY;
+    objects.character.animationStarted = true;
   }
+
+  // Calculate the target y position for the backpack
+  const targetBackpackY = tableY - backpackHeight + 5;
+  
+  // Animate the backpack's y position
+  animateBackpack(targetBackpackY);
+
+  // Draw the table at the calculated position and size
+  context.drawImage(sprite.imageTable, tableX, tableY, tableWidth, tableHeight);
+
+  // Draw the backpack above the table
+  context.drawImage(sprite.imageBackpack, backpackX, objects.character.position.y, backpackWidth, backpackHeight);
+
+  // Update the canvas
+  requestAnimationFrame(draw);
+}
+
+// Function to animate the backpack rising
+function animateBackpack(targetY) {
+  const speed = 0.4; // Set a constant speed
+
+  // Calculate the next y position based on the speed
+  if (objects.character.position.y > targetY) {
+    objects.character.position.y -= speed;
+  } else {
+    objects.character.position.y = targetY;
+  }
+}
 
 
 
