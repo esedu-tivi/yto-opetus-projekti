@@ -365,7 +365,7 @@ if (active === 'task2') {
   context.drawImage(sprite.imageBackpack, backpackX, objects.character.position.y, backpackWidth, backpackHeight);
 
   // Update the canvas
-  requestAnimationFrame(draw);
+  requestAnimationFrame();
 }
 
 // Function to animate the backpack rising
