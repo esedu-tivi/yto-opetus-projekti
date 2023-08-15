@@ -244,6 +244,7 @@ function drawArrow(x, y, length, width, vertical) {
   //Drawing the line
   context.beginPath()
   context.moveTo(x, y)
+  
   if(vertical) {
     context.lineTo(x + length, y)
   } else {
@@ -352,7 +353,7 @@ function draw() {
       context.stroke()
     }
 
-    //Stopping character on top of stairs
+    //Stopping character on top of the stairs
     if((objects.character.position.y + 432.75) <= objects.stairs.finalPosition.y) return
 
     //Moving character up the stairs on the correct frames
