@@ -379,13 +379,11 @@ if (active === 'task2') {
   // Draw the backpack above the table
   context.drawImage(sprite.imageBackpack, backpackX, objects.character.position.y, backpackWidth, backpackHeight);
 
-  // Update the canvas
-  requestAnimationFrame();
 }
 
 // Function to animate the backpack rising
 function animateBackpack(targetY) {
-  const speed = 0.4; // Set a constant speed
+  const speed = 4; // Set a constant speed
 
   // Calculate the next y position based on the speed
   if (objects.character.position.y > targetY) {
