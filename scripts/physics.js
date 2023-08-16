@@ -27,8 +27,8 @@ let objects = {
     scale: 0.9
   },
   stairs: {
-    position: { x: 138, y: 500 },
-    defaultPosition: { x: 138, y: 500 },
+    position: { x: 138, y: 580 },
+    defaultPosition: { x: 138, y: 580 },
     finalPosition: {x: 0, y: 0},
     width:  20,
     height: 20,
@@ -49,6 +49,8 @@ let active
 let disabled = false
 let started = false
 
+let updateInterval = 50
+let timePassed = 0
 
 //Loading canvas and sprites
 window.onload = function() {
@@ -146,6 +148,9 @@ function calculator1(event) {
 
   t1_result_work.value = t1_strength * t1_distance
   settings.task1 = {strength: t1_strength, distance: t1_distance, work: t1_result_work}
+
+  objects.character.position.y = 70
+  objects.character.defaultPosition.y = 70
 }
 
 
@@ -166,6 +171,9 @@ function calculator2(event) {
   t2_result_weight.value = Number(t2_mass) * 9.81
   t2_result_lift.value = (Number(t2_mass) * 9.81) * Number(t2_height)
   settings.task2 = {mass: t2_mass, height: t2_height}
+
+  objects.character.position.y = 70
+  objects.character.defaultPosition.y = 70
 }
 
 
@@ -191,6 +199,12 @@ function calculator3(event) {
   t3_result_efficiency.value = t3_result_lift.value / Number(t3_time)
   settings.task3 = {mass: t3_mass, height: t3_height, time: t3_time}
   objects.stairs.steps = t3_height * 5
+
+  settings.task3.stepsInPixels = objects.stairs.steps * objects.stairs.height
+  settings.task3.speed = (settings.task3.stepsInPixels + 200) / (settings.task3.time * 1000 / updateInterval)
+
+  objects.character.position.y = 150
+  objects.character.defaultPosition.y = 150
 }
 
 
@@ -220,7 +234,7 @@ function playAnimation() {
 
   setInterval(() => {
     draw()
-  }, 50)
+  }, updateInterval)
 }
 
 
@@ -242,6 +256,7 @@ function resetAnimation() {
   objects.newtonArrow.position = {...objects.newtonArrow.defaultPosition}
   objects.character.animationStarted = false;
   context.clearRect(0, 0, canvas.width, canvas.height)
+  timePassed = 0
 }
 
 
@@ -409,17 +424,23 @@ function animateBackpack(targetY) {
       context.stroke()
     }
 
+    //Time
+    context.fillText(`${timePassed / 1000}s`, 780, 75)
+
     //Stopping character on top of the stairs
     if((objects.character.position.y + 432.75) <= objects.stairs.finalPosition.y) return
 
+    timePassed += updateInterval
+
     //Moving character up the stairs on the correct frames
     if(frame > 7) {
-      objects.character.position.x += 2.5
-      objects.character.position.y -= 2.5
+      objects.character.position.x += settings.task3.speed
+      objects.character.position.y -= settings.task3.speed
     }
     
     if(frame < 12) frame++
     else frame = 0
+      
   }
 }
 
