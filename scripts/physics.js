@@ -190,15 +190,15 @@ function calculator3(event) {
   let t3_result_lift = document.getElementById('t3-result-lift')
   let t3_result_efficiency = document.getElementById('t3-result-efficiency')
 
-  if(t3_mass < 100 || t3_mass > 200) return parameterError('Massan on oltava 100-200 välillä')
-  if(t3_height < 1 || t3_height > 10) return parameterError('Korkeuden on oltava 1-10m välillä')
+  if(t3_mass < 100 || t3_mass > 200) return parameterError('Massan on oltava 100-200 kg:n välillä')
+  if(t3_height < 1 || t3_height > 10) return parameterError('Korkeuden on oltava 1-10 metrin välillä')
   if(t3_time < 1 || t3_time > 120) return parameterError('Ajan on oltava 1-120 sekunnin välillä')
 
   t3_result_weight.value = Number(t3_mass) * 10
   t3_result_lift.value =  t3_result_weight.value * Number(t3_height)
   t3_result_efficiency.value = t3_result_lift.value / Number(t3_time)
   settings.task3 = {mass: t3_mass, height: t3_height, time: t3_time}
-  objects.stairs.steps = t3_height * 5
+  objects.stairs.steps = Math.floor(t3_height) * 5
 
   settings.task3.stepsInPixels = objects.stairs.steps * objects.stairs.height
   settings.task3.speed = (settings.task3.stepsInPixels + 200) / (settings.task3.time * 1000 / updateInterval)
