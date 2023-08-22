@@ -1,18 +1,18 @@
-document.getElementById('task-dropdown').addEventListener('click', (event) => taskSelector(event))
-document.getElementById('t1-btn').addEventListener('click', (event) => calculator1(event))
-document.getElementById('t2-btn').addEventListener('click', (event) => calculator2(event))
-document.getElementById('t3-btn').addEventListener('click', (event) => calculator3(event))
-document.getElementById('start').addEventListener('click', playAnimation)
-document.getElementById('stop').addEventListener('click', stopAnimation)
-document.getElementById('reset').addEventListener('click', resetAnimation)
+document.getElementById('task-dropdown').addEventListener('click', (event) => taskSelector(event));
+document.getElementById('t1-btn').addEventListener('click', (event) => calculator1(event));
+document.getElementById('t2-btn').addEventListener('click', (event) => calculator2(event));
+document.getElementById('t3-btn').addEventListener('click', (event) => calculator3(event));
+document.getElementById('start').addEventListener('click', playAnimation);
+document.getElementById('stop').addEventListener('click', stopAnimation);
+document.getElementById('reset').addEventListener('click', resetAnimation);
 
-let canvas
-let context
+let canvas;
+let context;
 
 const sprite = {
   width: 800,
   height: 600
-}
+};
 
 let objects = {
   box: {
@@ -39,49 +39,49 @@ let objects = {
     defaultPosition: { x: 85, y: 280 },
     scale: 1
   }
-}
+};
 
-let settings = {}
+let settings = {};
 
-let frame = 0
-let speed = 4
-let active
-let disabled = false
-let started = false
+let frame = 0;
+let speed = 4;
+let active;
+let disabled = false;
+let started = false;
 
-let updateInterval = 50
-let timePassed = 0
+let updateInterval = 50;
+let timePassed = 0;
 
 //Loading canvas and sprites
 window.onload = function() {
-  canvas = document.getElementById('canvas')
-  context = canvas.getContext('2d')
+  canvas = document.getElementById('canvas');
+  context = canvas.getContext('2d');
 
-  resetAnimation()
+  resetAnimation();
 
   //Setting the width of the canvas to equal the parent div of the actual canvas
-  let canvas_div = document.getElementById('canvas_div')
-  canvas.width = canvas_div.offsetWidth
-  canvas.height = canvas_div.offsetHeight
+  let canvas_div = document.getElementById('canvas_div');
+  canvas.width = canvas_div.offsetWidth;
+  canvas.height = canvas_div.offsetHeight;
 
   //Setting the newton arrow to begin at the start of the canvas no matter the resolution
-  objects.newtonArrow.position.x = canvas.width * 0.02 - 200
-  objects.newtonArrow.defaultPosition = {...objects.newtonArrow.position}
+  objects.newtonArrow.position.x = canvas.width * 0.02 - 200;
+  objects.newtonArrow.defaultPosition = {...objects.newtonArrow.position};
 
-  context.font = "bold 48px Arial"
+  context.font = "bold 48px Arial";
   
   //Scaling down the objects and correcting their positions if the canvas is small, e.g mobile resolutions
   if(canvas.width < 400) {
-    speed = 2
-    objects.character.scale = 0.5
-    objects.character.position = {y: 275, x: -170}
-    objects.character.defaultPosition = {...objects.character.position}
-    objects.box.position = {x: 70, y: 360}
-    objects.box.defaultPosition = {...objects.box.position}
-    objects.box.height = 150
-    objects.newtonArrow.position.y = 380
-    objects.newtonArrow.defaultPosition = {...objects.newtonArrow.position}
-    objects.newtonArrow.scale = 0.5
+    speed = 2;
+    objects.character.scale = 0.5;
+    objects.character.position = {y: 275, x: -170};
+    objects.character.defaultPosition = {...objects.character.position};
+    objects.box.position = {x: 70, y: 360};
+    objects.box.defaultPosition = {...objects.box.position};
+    objects.box.height = 150;
+    objects.newtonArrow.position.y = 380;
+    objects.newtonArrow.defaultPosition = {...objects.newtonArrow.position};
+    objects.newtonArrow.scale = 0.5;
   }
 
   sprite.imageWalking = new Image()
