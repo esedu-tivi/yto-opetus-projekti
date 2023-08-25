@@ -35,8 +35,8 @@ let objects = {
     steps: 30
   },
   newtonArrow: {
-    position: { x: 85, y: 280 },
-    defaultPosition: { x: 85, y: 280 },
+    position: { x: -70, y: 280 },
+    defaultPosition: { x: -70, y: 280 },
     scale: 1
   }
 };
@@ -143,14 +143,23 @@ function calculator1(event) {
   let t1_distance = Number(document.getElementById('t1-distance').value)
   let t1_result_work = document.getElementById('t1-result-work')
 
-  if(t1_strength < 100 || t1_strength > 1000) return parameterError('Voiman on oltava 100-1000N välillä')
-  if(t1_distance < 10 || t1_distance > 25) return parameterError('Matkan on oltava 10-25m välillä')
+  if(t1_strength < 0 || t1_strength > 1000) return parameterError('Voiman on oltava 0-1000N välillä')
+  if(t1_distance < 0 || t1_distance > 25) return parameterError('Matkan on oltava 0-25m välillä')
 
   t1_result_work.value = t1_strength * t1_distance
   settings.task1 = {strength: t1_strength, distance: t1_distance, work: t1_result_work}
 
   objects.character.position.y = 70
   objects.character.defaultPosition.y = 70
+
+  objects.character.position.x = -620
+  objects.character.defaultPosition.x = -620
+
+  objects.newtonArrow.position.x = -335
+  objects.newtonArrow.defaultPosition.x = -335
+
+  objects.box.position.x = -170
+  objects.box.defaultPosition.x = -170
 }
 
 
@@ -165,12 +174,12 @@ function calculator2(event) {
   let t2_result_weight = document.getElementById('t2-result-weight')
   let t2_result_lift = document.getElementById('t2-result-lift')
 
-  if(t2_mass < 1 || t2_mass > 50) return parameterError('Massan on oltava 1-50 välillä')
-  if(t2_height < 1 || t2_height > 3) return parameterError('Korkeuden on oltava 1-3 välillä')
+  if(t2_mass < 0 || t2_mass > 50) return parameterError('Massan on oltava 0-50 välillä')
+  if(t2_height < 0 || t2_height > 3) return parameterError('Korkeuden on oltava 0-3 välillä')
 
-  t2_result_weight.value = Number(t2_mass) * 9.81
-  t2_result_lift.value = (Number(t2_mass) * 9.81) * Number(t2_height)
-  settings.task2 = {mass: t2_mass, height: t2_height}
+  t2_result_weight.value = Math.floor(Number(t2_mass) * 9.81)
+  t2_result_lift.value = Math.floor((Number(t2_mass) * 9.81) * Number(t2_height))
+  settings.task2 = {mass: t2_mass, height: t2_height, newton: t2_result_weight.value}
 
   objects.character.position.y = 70
   objects.character.defaultPosition.y = 70
@@ -190,18 +199,18 @@ function calculator3(event) {
   let t3_result_lift = document.getElementById('t3-result-lift')
   let t3_result_efficiency = document.getElementById('t3-result-efficiency')
 
-  if(t3_mass < 100 || t3_mass > 200) return parameterError('Massan on oltava 100-200 kg:n välillä')
-  if(t3_height < 1 || t3_height > 10) return parameterError('Korkeuden on oltava 1-10 metrin välillä')
-  if(t3_time < 1 || t3_time > 120) return parameterError('Ajan on oltava 1-120 sekunnin välillä')
+  if(t3_mass < 0 || t3_mass > 200) return parameterError('Massan on oltava 0-200 kg:n välillä')
+  if(t3_height < 0 || t3_height > 10) return parameterError('Korkeuden on oltava 0-15 metrin välillä')
+  if(t3_time < 0 || t3_time > 120) return parameterError('Ajan on oltava 0-120 sekunnin välillä')
 
-  t3_result_weight.value = Number(t3_mass) * 10
+  t3_result_weight.value = Number(t3_mass) * 9.81
   t3_result_lift.value =  t3_result_weight.value * Number(t3_height)
   t3_result_efficiency.value = t3_result_lift.value / Number(t3_time)
   settings.task3 = {mass: t3_mass, height: t3_height, time: t3_time}
   objects.stairs.steps = Math.floor(t3_height) * 5
 
-  settings.task3.stepsInPixels = objects.stairs.steps * objects.stairs.height
-  settings.task3.speed = (settings.task3.stepsInPixels + 200) / (settings.task3.time * 1000 / updateInterval)
+  settings.task3.stepsInPixels = Math.floor(objects.stairs.steps / 2)  * objects.stairs.height
+  settings.task3.speed = (settings.task3.stepsInPixels + 20) / (settings.task3.time * 1000 / updateInterval)
 
   objects.character.position.y = 150
   objects.character.defaultPosition.y = 150
@@ -261,7 +270,12 @@ function resetAnimation() {
 
 
 //Draws an arrow
-function drawArrow(x, y, length, width, vertical) {
+function drawArrow(x, y, length, width, vertical, color) {
+
+  if(color === 'red') {
+    context.fillStyle = "#ff0000"
+    context.strokeStyle = "#ff0000"
+  }
 
   //Drawing the line
   context.beginPath()
@@ -290,6 +304,10 @@ function drawArrow(x, y, length, width, vertical) {
   }
 
   context.fill()
+
+  context.fillStyle = "#000000"
+  context.strokeStyle = "#000000"
+  context.lineWidth = 1
 
   return
 }
@@ -321,13 +339,16 @@ function draw() {
 
     //Drawing the distance and newton arrows
     drawArrow(canvas.width * 0.02, 520, distanceArrow, 15, true)
-    drawArrow(objects.newtonArrow.position.x, objects.newtonArrow.position.y, 150, settings.task1.strength / 10 * objects.newtonArrow.scale, true)
+    drawArrow(objects.newtonArrow.position.x, objects.newtonArrow.position.y, 150, settings.task1.strength / 10 * objects.newtonArrow.scale, true, 'red')
 
     objects.newtonArrow.position.x += speed
 
     //Texts showing the physical quantities
     context.fillText(`${settings.task1.distance}m`, distanceArrow / 2, 580)
+    context.fillStyle = "#ff0000"
     context.fillText(`${settings.task1.strength}N`, objects.newtonArrow.position.x, objects.newtonArrow.position.y - settings.task1.strength / 14 * objects.newtonArrow.scale)
+    context.fillStyle = "#000000"
+
 
     //Drawing the closet
     context.beginPath()
@@ -379,6 +400,14 @@ if (active === 'task2') {
   // Draw the backpack above the table
   context.drawImage(sprite.imageBackpack, backpackX, objects.character.position.y, backpackWidth, backpackHeight);
 
+  //
+  drawArrow(tableX + tableWidth + 30, tableY, tableHeight - 15, 15)
+  context.fillText(`${settings.task2.height}m`, tableX + tableWidth + 50,  (tableHeight / 2 + tableY), 580)
+
+  drawArrow(backpackX + (backpackWidth / 2), objects.character.position.y, backpackHeight * 1.2, 15, false, "red")
+  context.fillStyle = "#ff0000"
+  context.fillText(`${settings.task2.newton}N`, backpackX + (backpackWidth / 2) - (settings.task2.newton.toString().length * 18), objects.character.position.y - 15, 580)
+  context.fillStyle = "#000000"
 }
 
 // Function to animate the backpack rising
@@ -423,18 +452,17 @@ function animateBackpack(targetY) {
     }
 
     //Time
+    if(timePassed < settings.task3.time * 1000) timePassed += updateInterval
     context.fillText(`${timePassed / 1000}s`, 780, 75)
 
-    //Stopping character on top of the stairs
-    if((objects.character.position.y + 432.75) <= objects.stairs.finalPosition.y) return
+    drawArrow(objects.stairs.finalPosition.x + 30, objects.stairs.finalPosition.y + objects.stairs.height, objects.stairs.defaultPosition.y - objects.stairs.finalPosition.y - objects.stairs.height, 15)
+    context.fillText(`${settings.task3.height}m`, objects.stairs.finalPosition.x + 50, ((objects.stairs.defaultPosition.y + objects.stairs.finalPosition.y) / 2), 580)
 
-    timePassed += updateInterval
+    if(timePassed >= settings.task3.time * 1000) return
 
-    //Moving character up the stairs on the correct frames
-    if(frame > 7) {
-      objects.character.position.x += settings.task3.speed
-      objects.character.position.y -= settings.task3.speed
-    }
+    objects.character.position.x += settings.task3.speed
+    objects.character.position.y -= settings.task3.speed
+    
     
     if(frame < 12) frame++
     else frame = 0
