@@ -160,6 +160,18 @@ function calculator1(event) {
 
   objects.box.position.x = -170
   objects.box.defaultPosition.x = -170
+
+  //Moving objects to the middle of the screen on lower distances
+  if(t1_distance <= 7) {
+    objects.character.position.x = -400
+    objects.character.defaultPosition.x = -400
+  
+    objects.newtonArrow.position.x = -99
+    objects.newtonArrow.defaultPosition.x = -99
+  
+    objects.box.position.x = 55
+    objects.box.defaultPosition.x = 55
+  }
 }
 
 
@@ -200,7 +212,7 @@ function calculator3(event) {
   let t3_result_efficiency = document.getElementById('t3-result-efficiency')
 
   if(t3_mass < 0 || t3_mass > 200) return parameterError('Massan on oltava 0-200 kg:n välillä')
-  if(t3_height < 0 || t3_height > 10) return parameterError('Korkeuden on oltava 0-15 metrin välillä')
+  if(t3_height < 0 || t3_height > 10) return parameterError('Korkeuden on oltava 0-10 metrin välillä')
   if(t3_time < 0 || t3_time > 120) return parameterError('Ajan on oltava 0-120 sekunnin välillä')
 
   t3_result_weight.value = Number(t3_mass) * 9.81
@@ -212,10 +224,10 @@ function calculator3(event) {
   settings.task3.stepsInPixels = Math.floor(objects.stairs.steps / 2)  * objects.stairs.height
   settings.task3.speed = (settings.task3.stepsInPixels + 20) / (settings.task3.time * 1000 / updateInterval)
 
-  objects.character.position.y = 150
-  objects.character.defaultPosition.y = 150
-}
+  objects.character.position = {x: -275, y: 150}
+  objects.character.defaultPosition = {x: -275, y: 150}
 
+}
 
 
 //Error handler for parameters
@@ -326,8 +338,18 @@ function draw() {
     let distanceArrow = settings.task1.distance * canvas.width / 24
     if(distanceArrow > canvas.width) distanceArrow = canvas.width * 0.94
 
+    let distanceArrowStart = canvas.width * 0.02
+    let distanceQuantityX = distanceArrow / 2
+
+     //Moving objects to the middle of the screen for lower distances
+     if(settings.task1.distance <= 7) {
+      distanceArrowStart = canvas.width * 0.25
+      distanceQuantityX = distanceArrow / 2 + distanceArrowStart
+    }
+
     //Stopping the animation at the end of the distance arrow
-    if(objects.box.position.x > distanceArrow - (canvas.width * 0.1)) return
+    if(settings.task1.distance > 7 && objects.box.position.x > distanceArrow - (canvas.width * 0.1)) return
+    if(settings.task1.distance <= 7 && objects.box.position.x > (distanceArrow + distanceArrowStart - objects.box.width + 15)) return
 
     //Setting the width of the closet to a more suitable number on smaller devices
     if(objects.box.width > canvas.width / 5) objects.box.width = canvas.width / 8
@@ -338,13 +360,13 @@ function draw() {
     context.drawImage(sprite.imageWalking, frame * sprite.width, 0, sprite.width, sprite.height, objects.character.position.x, objects.character.position.y, sprite.width * objects.character.scale, sprite.height * objects.character.scale)
 
     //Drawing the distance and newton arrows
-    drawArrow(canvas.width * 0.02, 520, distanceArrow, 15, true)
+    drawArrow(distanceArrowStart, 520, distanceArrow, 15, true)
     drawArrow(objects.newtonArrow.position.x, objects.newtonArrow.position.y, 150, settings.task1.strength / 10 * objects.newtonArrow.scale, true, 'red')
 
     objects.newtonArrow.position.x += speed
 
     //Texts showing the physical quantities
-    context.fillText(`${settings.task1.distance}m`, distanceArrow / 2, 580)
+    context.fillText(`${settings.task1.distance}m`, distanceQuantityX, 580)
     context.fillStyle = "#ff0000"
     context.fillText(`${settings.task1.strength}N`, objects.newtonArrow.position.x, objects.newtonArrow.position.y - settings.task1.strength / 14 * objects.newtonArrow.scale)
     context.fillStyle = "#000000"
