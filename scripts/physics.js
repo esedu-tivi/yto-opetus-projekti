@@ -429,9 +429,7 @@ function draw() {
     //
     drawArrow(tableX + tableWidth + 30, tableY, tableHeight - 15, 15)
     context.fillText(`${settings.task2.height}m`, tableX + tableWidth + 50, (tableHeight / 2 + tableY), 580)
-
-    drawArrow(backpackX + (backpackWidth / 2), objects.character.position.y, backpackHeight * 1.2, 15, false, "red")
-    context.fillStyle = "#ff0000"
+    
     context.fillText(`${settings.task2.newton}J`, backpackX + (backpackWidth / 2) - (settings.task2.newton.toString().length * 18), objects.character.position.y - 15, 580)
     context.fillStyle = "#000000"
   }
